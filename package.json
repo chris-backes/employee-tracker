@@ -1,0 +1,24 @@
+{
+  "name": "employee-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chris-backes/employee-tracker.git"
+  },
+  "author": "chris-backes",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/chris-backes/employee-tracker/issues"
+  },
+  "homepage": "https://github.com/chris-backes/employee-tracker#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^8.2.0",
+    "mysql2": "^2.3.3"
+  }
+}
