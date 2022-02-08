@@ -5,7 +5,7 @@ module.exports = mysql.createConnection(
 		host: "localhost",
 		user: "root",
 		password: "mysqL_passworD_tO_mY_accounT_912",
-		database: "election",
+		database: "employees",
 	},
-	console.log("Connected to the election database.")
+	console.log("Connected to the employees database.")
 );
