@@ -1,31 +1,28 @@
-const { viewDept, viewRoles, viewEmpl } = require('./viewTables')
+const View = require('../lib/View')
+const addDept = require('../lib/Add')
+const process = require('process')
 
 module.exports = function (response) {
     console.log(response)
     switch (response) {
         case 'View All Departments':
-            viewDept();
-            break;
+            return new View('department').getTable();
         case  'View All Roles':
-            viewRoles();
-            break;
+            return new View('roles').getTable();
         case 'View All Employees':
-            viewEmpl();
-            break;
+            return new View('employee').getTable();
         case 'Add a Department':
-            addDept();
-            break;
+            return addDept();
         case 'Add a Role':
-            addRole();
-            break;
+            return addRole();
         case 'Add an Employee':
-            addEmpl();
-            break;
+            return addEmpl();
         case 'Update Employee Role':
-            updateEmpl();
-            break;
+            return updateEmpl();
+        case 'Exit':
+            console.log('Goodbye!')
+            return process.exit();
         default:
-            console.log('you done goofed')
-            return;
+            return console.log('you done goofed');
     }
 }
