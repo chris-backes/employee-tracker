@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
+const clc = require('cli-color')
 const db = require("./db/connection");
 const Database = require("./lib/Database");
 const process = require('process');
@@ -17,26 +18,30 @@ const list = [
 ];
 
 const init = async () => {
-	console.log(`
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    What would you like to do?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    `);
+	console.log(clc.blueBright.bgBlackBright(`
+                                                   
+╔═══╗─────╔╗──────────────╔═══╗──╔╗───╔╗           
+║╔══╝─────║║──────────────╚╗╔╗║─╔╝╚╗──║║           
+║╚══╦╗╔╦══╣║╔══╦╗─╔╦══╦══╗─║║║╠═╩╗╔╬══╣╚═╦══╦══╦══╗
+║╔══╣╚╝║╔╗║║║╔╗║║─║║║═╣║═╣─║║║║╔╗║║║╔╗║╔╗║╔╗║══╣║═╣
+║╚══╣║║║╚╝║╚╣╚╝║╚═╝║║═╣║═╣╔╝╚╝║╔╗║╚╣╔╗║╚╝║╔╗╠══║║═╣
+╚═══╩╩╩╣╔═╩═╩══╩═╗╔╩══╩══╝╚═══╩╝╚╩═╩╝╚╩══╩╝╚╩══╩══╝
+───────║║──────╔═╝║                                
+───────╚╝──────╚══╝                                
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~           
+          What would you like to do?               
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~           `));
 	const res = await inquirer.prompt({
 		type: "list",
 		name: "options",
 		message: "Select one",
 		choices: list,
 	});
-	hello(res.options)
+	redirectQuestion(res.options)
 
-
-	// const  next = await redirectQuestion(res.options)
-
-	// const nextNext = await init()
 };
 
-async function hello(param) {
+async function redirectQuestion(param) {
 	switch (param) {
 		case "View All Departments":
 			const [department] = await Database.getTableDept();
@@ -51,8 +56,10 @@ async function hello(param) {
 			console.table(employees);
 			break;
 		case "Add a Department":
-			const deptRes = await addDept()
-			console.log(deptRes)
+			await addDept()
+			const [newDept] = await Database.getTableDept();
+			console.table(newDept);
+			console.log('New Department Added!')
 			break;
 		case "Add a Role":
 			return addRole();
