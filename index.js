@@ -1,8 +1,9 @@
-const cTable = require("console.table");
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const db = require("./db/connection");
-const redirectQuestion = require("./utils/redirectQuestion");
+const Database = require("./lib/Database");
+const process = require('process');
+const { addDept } = require("./lib/Database");
 
 const list = [
 	"View All Departments",
@@ -12,30 +13,60 @@ const list = [
 	"Add a Role",
 	"Add an Employee",
 	"Update Employee Role",
-    "Exit"
+	"Exit",
 ];
 
-function init() {
+const init = async () => {
 	console.log(`
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     What would you like to do?
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     `);
-	inquirer.prompt({
+	const res = await inquirer.prompt({
 		type: "list",
 		name: "options",
 		message: "Select one",
 		choices: list,
-	})
-    .then((data) => {
-        redirectQuestion(data.options)
-    })
-    .then(() => {
-        init()
-    })
-    .catch(err => {
-        console.log(err);
-    })
+	});
+	hello(res.options)
+
+
+	// const  next = await redirectQuestion(res.options)
+
+	// const nextNext = await init()
 };
+
+async function hello(param) {
+	switch (param) {
+		case "View All Departments":
+			const [department] = await Database.getTableDept();
+			console.table(department);
+			break;
+		case "View All Roles":
+			const [role] = await Database.getTableRole();
+			console.table(role);
+			break;
+		case "View All Employees":
+			const [employees] = await Database.getTableEmply();
+			console.table(employees);
+			break;
+		case "Add a Department":
+			const deptRes = await addDept()
+			console.log(deptRes)
+			break;
+		case "Add a Role":
+			return addRole();
+		case "Add an Employee":
+			return addEmpl();
+		case "Update Employee Role":
+			return updateEmpl();
+		case "Exit":
+			console.log("Goodbye!");
+			return process.exit();
+		default:
+			return console.log("you done goofed");
+	}
+	init();
+}
 
 init();
