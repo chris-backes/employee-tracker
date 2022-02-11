@@ -1,33 +1,32 @@
 const inquirer = require("inquirer");
-const mysql = require("mysql2");
 const clc = require("cli-color");
-const db = require("./db/connection");
 const Database = require("./lib/Database");
 const process = require("process");
-const { addDept } = require("./lib/Database");
+
 //this sits outside of a function so that it only gets called at the beginning
 console.log(
 	clc.blueBright.bgBlackBright(`
-                                                             
-     ╔═══╗─────╔╗──────────────╔═══╗──╔╗───╔╗                
-     ║╔══╝─────║║──────────────╚╗╔╗║─╔╝╚╗──║║                
-     ║╚══╦╗╔╦══╣║╔══╦╗─╔╦══╦══╗─║║║╠═╩╗╔╬══╣╚═╦══╦══╦══╗     
-     ║╔══╣╚╝║╔╗║║║╔╗║║─║║║═╣║═╣─║║║║╔╗║║║╔╗║╔╗║╔╗║══╣║═╣     
-     ║╚══╣║║║╚╝║╚╣╚╝║╚═╝║║═╣║═╣╔╝╚╝║╔╗║╚╣╔╗║╚╝║╔╗╠══║║═╣     
-     ╚═══╩╩╩╣╔═╩═╩══╩═╗╔╩══╩══╝╚═══╩╝╚╩═╩╝╚╩══╩╝╚╩══╩══╝     
-     ───────║║──────╔═╝║                                     
-     ───────╚╝──────╚══╝                                     
-                                                             `)
+                                                                                 
+  ╔════╗──────────╔═╗────────────────────╔═════╗────╔═╗─────╔═╗                  
+  ║ ╔══╝──────────║ ║────────────────────╚╗ ╔╗ ║───╔╝ ╚╗────║ ║                  
+  ║ ╚══╦═╗─╔═╦════╣ ║╔════╦═╗─╔═╦═══╦═══╗─║ ║║ ╠═══╩╗ ╔╬════╣ ╚══╦════╦═══╦═══╗  
+  ║ ╔══╣ ╚═╝ ║ ╔╗ ║ ║║ ╔╗ ║ ║─║ ║ ══╣ ══╣─║ ║║ ║ ╔╗ ║ ║║ ╔╗ ║ ╔╗ ║ ╔╗ ║ ══╣ ══╣  
+  ║ ╚══╣ ║ ║ ║ ╚╝ ║ ╚╣ ╚╝ ║ ╚═╝ ║ ══╣ ══╣╔╝ ╚╝ ║ ╔╗ ║ ╚╣ ╔╗ ║ ╚╝ ║ ╔╗ ╠══ ║ ══╣  
+  ╚════╩═╩═╩═╣ ╔══╩══╩════╩═══╗ ║═══╩═══╝╚═════╩═╝╚═╩══╩═╝╚═╩════╩═╝╚═╩═══╩═══╝  
+  ───────────║ ║────────────╔═╝ ║                                                
+  ───────────╚═╝────────────╚═══╝                                                
+                                                                                 `)
 );
+
 //I implementend a timeout so that the call to the menu isn't immediate; I think it provides a better user experience
 const sleep = (ms = 1000) => new Promise((r) => setTimeout(r, ms));
 
 const init = async () => {
 	console.log(
 		clc.blueBright.bgBlackBright(`
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                
-               What would you like to do?                    
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                `)
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                          
+                         What would you like to do?                              
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                          `)
 	);
 	const res = await inquirer.prompt({
 		type: "list",
@@ -74,16 +73,17 @@ async function redirectQuestion(param) {
 			console.log("New Role Added!");
 			await sleep();
 			console.table(newRole);
-			break
+			break;
 		case "Add an Employee":
 			await Database.addEmply();
 			const [newEmploy] = await Database.getTableEmply();
 			console.log("New Employee Added!");
 			await sleep();
-			console.table(newEmploy)
+			console.table(newEmploy);
 			break;
 		case "Update Employee Role":
-			return updateEmply();
+			await Database.updateEmply();
+			break;
 		case "Exit":
 			//Since this entire application leaves the connection to the database open, I've added a feature to kill the terminal process without having to hit ctrl + C
 			console.log("Goodbye!");

@@ -22,5 +22,4 @@ CREATE TABLE employee (
   roles_id INTEGER,
   manager_id INTEGER,
   CONSTRAINT fk_roles FOREIGN KEY (roles_id) REFERENCES roles(id)
-  -- SELECT FROM employee e INNER JOIN employee m ON m.id = e.maanger_id
 );
