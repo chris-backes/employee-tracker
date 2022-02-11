@@ -76,7 +76,12 @@ async function redirectQuestion(param) {
 			console.table(newRole);
 			break
 		case "Add an Employee":
-			return addEmply();
+			await Database.addEmply();
+			const [newEmploy] = await Database.getTableEmply();
+			console.log("New Employee Added!");
+			await sleep();
+			console.table(newEmploy)
+			break;
 		case "Update Employee Role":
 			return updateEmply();
 		case "Exit":
