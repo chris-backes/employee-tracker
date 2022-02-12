@@ -1,5 +1,7 @@
 # Employee Tracker
 
+![License](https://img.shields.io/github/license/chris-backes/employee-tracker)
+
 Repo: https://github.com/chris-backes/employee-tracker
 
 ## Table of Contents
@@ -10,6 +12,7 @@ Repo: https://github.com/chris-backes/employee-tracker
 * [Installation](#installation)
 * [Usage](#usage)
     * [UI Features](#ui-features)
+* [License](#license)
 * [Author](#author)
 
 ## Description
