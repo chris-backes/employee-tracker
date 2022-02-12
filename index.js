@@ -47,6 +47,7 @@ const init = async () => {
 			"Delete Role",
 			"Delete Employee",
 			"Get Budget",
+			"Find Employee",
 			"Exit",
 		],
 	});
@@ -121,6 +122,10 @@ async function redirectQuestion(param) {
 		case "Get Budget":
 			const [budget] = await Database.getBudget();
 			console.table(budget);
+			break;
+		case 'Find Employee':
+			const [findEmployeeResults] = await Database.findEmployee()
+			console.table(findEmployeeResults)
 			break;
 		case "Exit":
 			//Since this entire application leaves the connection to the database open, I've added a feature to kill the terminal process without having to hit ctrl + C
