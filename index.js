@@ -7,18 +7,17 @@ const process = require("process");
 console.log(
 	clc.blueBright.bgBlackBright(`
                                                                                  
-  ╔════╗──────────╔═╗────────────────────╔═════╗────╔═╗─────╔═╗                  
-  ║ ╔══╝──────────║ ║────────────────────╚╗ ╔╗ ║───╔╝ ╚╗────║ ║                  
+  ╔════╗──────────╔═╗────────────────────╔═════╗────╔═╗─────╔═╗──────            
+  ║ ╔══╝──────────║ ║────────────────────╚╗ ╔╗ ║───╔╝ ╚╗────║ ║───────────       
   ║ ╚══╦═╗─╔═╦════╣ ║╔════╦═╗─╔═╦═══╦═══╗─║ ║║ ╠═══╩╗ ╔╬════╣ ╚══╦════╦═══╦═══╗  
   ║ ╔══╣ ╚═╝ ║ ╔╗ ║ ║║ ╔╗ ║ ║─║ ║ ══╣ ══╣─║ ║║ ║ ╔╗ ║ ║║ ╔╗ ║ ╔╗ ║ ╔╗ ║ ══╣ ══╣  
   ║ ╚══╣ ║ ║ ║ ╚╝ ║ ╚╣ ╚╝ ║ ╚═╝ ║ ══╣ ══╣╔╝ ╚╝ ║ ╔╗ ║ ╚╣ ╔╗ ║ ╚╝ ║ ╔╗ ╠══ ║ ══╣  
   ╚════╩═╩═╩═╣ ╔══╩══╩════╩═══╗ ║═══╩═══╝╚═════╩═╝╚═╩══╩═╝╚═╩════╩═╝╚═╩═══╩═══╝  
-  ───────────║ ║────────────╔═╝ ║                                                
-  ───────────╚═╝────────────╚═══╝                                                
-                                                                                 `)
-);
+   ──────────║ ║───────────╔══╝ ║──────────────────────────────                  
+       ──────╚═╝───────────╚════╝───────────────                                 
+                                                                                 `));
 
-//I implementend a timeout so that the call to the menu isn't immediate; I think it provides a better user experience
+//I implementend a timeout so that the call to the menu isn't immediate; I think it provides a better user experience. The idea was 
 const sleep = (ms = 1000) => new Promise((r) => setTimeout(r, ms));
 
 const init = async () => {
@@ -26,8 +25,7 @@ const init = async () => {
 		clc.blueBright.bgBlackBright(`
                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                          
                          What would you like to do?                              
-                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                          `)
-	);
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                          `));
 	const res = await inquirer.prompt({
 		type: "list",
 		name: "options",
@@ -36,10 +34,13 @@ const init = async () => {
 			"View All Departments",
 			"View All Roles",
 			"View All Employees",
+			"View All Employees by Manager",
+			"View All Employees by Department",
 			"Add a Department",
 			"Add a Role",
 			"Add an Employee",
 			"Update Employee Role",
+			"Get Budget",
 			"Exit",
 		],
 	});
@@ -57,8 +58,16 @@ async function redirectQuestion(param) {
 			console.table(role);
 			break;
 		case "View All Employees":
-			const [employees] = await Database.getTableEmply();
+			const [employees] = await Database.getTableEmply('');
 			console.table(employees);
+			break;
+		case "View All Employees by Manager":
+			const [employeesManager] = await Database.getTableEmply('Order by manager');
+			console.table(employeesManager);
+			break;
+		case "View All Employees by Department":
+			const [employeesDepartment] = await Database.getTableEmply('Order by department');
+			console.table(employeesDepartment);
 			break;
 		case "Add a Department":
 			await Database.addDept();
@@ -81,15 +90,20 @@ async function redirectQuestion(param) {
 			await sleep();
 			console.table(newEmploy);
 			break;
-		case "Update Employee Role":
+		case "Update Employee Role and/or Manager":
 			await Database.updateEmply();
+			console.log('Employee updated!')
+			break;
+		case "Get Budget":
+			const [budget] = await Database.getBudget();
+			console.table(budget)
 			break;
 		case "Exit":
 			//Since this entire application leaves the connection to the database open, I've added a feature to kill the terminal process without having to hit ctrl + C
 			console.log("Goodbye!");
 			return process.exit();
 		default:
-			return console.log("you done goofed");
+			return console.log("An error has occured");
 	}
 	await sleep();
 	init();
