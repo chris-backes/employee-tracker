@@ -21,6 +21,8 @@ Ths application was built from scratch as an interface with a MySQL database fro
 
 A tutorial on the installation and use of this applicaiton can be found here: https://youtu.be/09TLNXxgVww
 
+(Please note: the video claims tht a dependency 'process' is need to run process.exit(). That is not correct.)
+
 ![the applciaiton running from the command line](./assets/screenshot.png)
 
 ### Database
