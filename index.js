@@ -23,9 +23,9 @@ const sleep = (ms = 1000) => new Promise((r) => setTimeout(r, ms));
 const init = async () => {
 	console.log(
 		clc.blueBright.bgBlackBright(`
-                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                          
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                
                          What would you like to do?                              
-                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                          `));
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                `));
 	const res = await inquirer.prompt({
 		type: "list",
 		name: "options",
@@ -40,6 +40,9 @@ const init = async () => {
 			"Add a Role",
 			"Add an Employee",
 			"Update Employee Role",
+			"Delete Department",
+			"Delete Role",
+			"Delete Employee",
 			"Get Budget",
 			"Exit",
 		],
@@ -50,23 +53,23 @@ const init = async () => {
 async function redirectQuestion(param) {
 	switch (param) {
 		case "View All Departments":
-			const [department] = await Database.getTableDept();
+			const [department] = await Database.getTable('department');
 			console.table(department);
 			break;
 		case "View All Roles":
-			const [role] = await Database.getTableRole();
+			const [role] = await Database.getTable('roles');
 			console.table(role);
 			break;
 		case "View All Employees":
-			const [employees] = await Database.getTableEmply('');
+			const [employees] = await Database.getTable('employee', '');
 			console.table(employees);
 			break;
 		case "View All Employees by Manager":
-			const [employeesManager] = await Database.getTableEmply('Order by manager');
+			const [employeesManager] = await Database.getTable('employee', 'Order by manager');
 			console.table(employeesManager);
 			break;
 		case "View All Employees by Department":
-			const [employeesDepartment] = await Database.getTableEmply('Order by department');
+			const [employeesDepartment] = await Database.getTable('employee', 'Order by department');
 			console.table(employeesDepartment);
 			break;
 		case "Add a Department":
@@ -94,6 +97,18 @@ async function redirectQuestion(param) {
 			await Database.updateEmply();
 			console.log('Employee updated!')
 			break;
+		case "Delete Department":
+			await Database.deleteEntry('department')
+			console.log('Entry Deleted')
+			break;
+		case "Delete Role":
+			await Database.deleteEntry('roles')
+			console.log('Entry Deleted')
+			break;
+		case "Delete Employee":
+			await Database.deleteEntry('employee')
+			console.log('Entry Deleted')
+			break;
 		case "Get Budget":
 			const [budget] = await Database.getBudget();
 			console.table(budget)
@@ -101,6 +116,7 @@ async function redirectQuestion(param) {
 		case "Exit":
 			//Since this entire application leaves the connection to the database open, I've added a feature to kill the terminal process without having to hit ctrl + C
 			console.log("Goodbye!");
+			await sleep();
 			return process.exit();
 		default:
 			return console.log("An error has occured");
