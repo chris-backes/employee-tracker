@@ -1,7 +1,6 @@
 const inquirer = require("inquirer");
 const clc = require("cli-color");
 const Database = require("./lib/Database");
-const process = require("process");
 const cTable = require("console.table");
 
 //this sits outside of a function so that it only gets called at the beginning
@@ -48,6 +47,7 @@ const init = async () => {
 			"Delete Employee",
 			"Get Budget",
 			"Find Employee",
+			"Get Budget, Head Count, and Average Salary",
 			"Exit",
 		],
 	});
@@ -61,7 +61,7 @@ async function redirectQuestion(param) {
 			console.table(department);
 			break;
 		case "View All Roles":
-			const [role] = await Database.getTable("roles");
+			const [role] = await Database.getTable("role");
 			console.table(role);
 			break;
 		case "View All Employees":
@@ -91,7 +91,7 @@ async function redirectQuestion(param) {
 			break;
 		case "Add a Role":
 			await Database.addRole();
-			const [newRole] = await Database.getTable("roles");
+			const [newRole] = await Database.getTable("role");
 			console.log("New Role Added!");
 			await sleep();
 			console.table(newRole);
@@ -112,7 +112,7 @@ async function redirectQuestion(param) {
 			console.log("Entry Deleted");
 			break;
 		case "Delete Role":
-			await Database.deleteEntry("roles");
+			await Database.deleteEntry("role");
 			console.log("Entry Deleted");
 			break;
 		case "Delete Employee":
@@ -120,12 +120,37 @@ async function redirectQuestion(param) {
 			console.log("Entry Deleted");
 			break;
 		case "Get Budget":
-			const [budget] = await Database.getBudget();
+			const [budget] = await Database.getBudgetInfo(`SELECT
+				department.name AS Department,
+				SUM(role.salary) AS Budget
+			FROM
+				employee
+			LEFT JOIN
+				role ON employee.role_id = role.id
+			LEFT JOIN
+				department ON role.department_id = department.id
+			GROUP BY
+				department.name;`);
 			console.table(budget);
 			break;
-		case 'Find Employee':
-			const [findEmployeeResults] = await Database.findEmployee()
-			console.table(findEmployeeResults)
+		case "Find Employee":
+			const [findEmployeeResults] = await Database.findEmployee();
+			console.table(findEmployeeResults);
+			break;
+		case "Get Budget, Head Count, and Average Salary":
+			const [budgetAndMore] = await Database.getBudgetInfo(`SELECT 
+				department.name AS Department,
+				COUNT(1) AS 'Employees per Dept',
+				SUM(role.salary) AS Budget,
+				TRUNCATE(AVG(role.salary), 2) AS 'Average Salary'
+			FROM employee
+			LEFT JOIN
+				role ON employee.role_id = role.id
+			LEFT JOIN
+				department ON role.department_id = department.id
+			GROUP BY
+				department.id;`);
+			console.table(budgetAndMore);
 			break;
 		case "Exit":
 			//Since this entire application leaves the connection to the database open, I've added a feature to kill the terminal process without having to hit ctrl + C

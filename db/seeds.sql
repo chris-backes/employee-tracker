@@ -5,7 +5,7 @@ VALUES
     ('Human Resources'),
     ('Information Technology');
 
-INSERT INTO roles (title, salary, department_id)
+INSERT INTO role (title, salary, department_id)
 VALUES
     ('Digital Marketing Specialist', 90000.00, 1),
     ('Market Research Analyst', 75000.00, 1),
@@ -24,7 +24,7 @@ VALUES
     ('Systems Administrator', 90000.00, 4),
     ('VP Technology', 160000, 4);
 
-INSERT INTO employee (first_name, last_name, roles_id, manager_id)
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES
     ('Jack', 'London', 1, 10),
     ('Robert', 'Bruce', 1, 10),
