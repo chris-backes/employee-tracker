@@ -2,6 +2,7 @@ const inquirer = require("inquirer");
 const clc = require("cli-color");
 const Database = require("./lib/Database");
 const cTable = require("console.table");
+const { viewDeptTeam } = require("./lib/Database");
 
 //this sits outside of a function so that it only gets called at the beginning
 console.log(
@@ -48,6 +49,7 @@ const init = async () => {
 			"Get Budget",
 			"Find Employee",
 			"Get Budget, Head Count, and Average Salary",
+			"View employees of specific department",
 			"Exit",
 		],
 	});
@@ -152,6 +154,10 @@ async function redirectQuestion(param) {
 				department.id;`);
 			console.table(budgetAndMore);
 			break;
+		case 'View employees of specific department': 
+			const [viewByDept] = await Database.viewDeptTeam();
+			console.table(viewByDept)
+			break;
 		case "Exit":
 			//Since this entire application leaves the connection to the database open, I've added a feature to kill the terminal process without having to hit ctrl + C
 			console.log("Goodbye!");
@@ -159,7 +165,7 @@ async function redirectQuestion(param) {
 			return process.exit();
 		default:
 			console.log("An error has occured");
-			break;
+			return process.exit();
 	}
 	await sleep();
 	init();
