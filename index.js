@@ -2,7 +2,6 @@ const inquirer = require("inquirer");
 const clc = require("cli-color");
 const Database = require("./lib/Database");
 const cTable = require("console.table");
-const { viewDeptTeam } = require("./lib/Database");
 
 //this sits outside of a function so that it only gets called at the beginning
 console.log(
@@ -111,15 +110,15 @@ async function redirectQuestion(param) {
 			break;
 		case "Delete Department":
 			await Database.deleteEntry("department");
-			console.log("Entry Deleted");
+			console.log("Department Deleted");
 			break;
 		case "Delete Role":
 			await Database.deleteEntry("role");
-			console.log("Entry Deleted");
+			console.log("Role Deleted");
 			break;
 		case "Delete Employee":
 			await Database.deleteEntry("employee");
-			console.log("Entry Deleted");
+			console.log("Employee Deleted");
 			break;
 		case "Get Budget":
 			const [budget] = await Database.getBudgetInfo(`SELECT
