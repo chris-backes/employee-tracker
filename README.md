@@ -4,7 +4,7 @@
 
 Repo: https://github.com/chris-backes/employee-tracker
 
-(Please note: some of the fucntions contianed in the applciation were not required by the assignment. The all appear below the 'Get Budget' option in the main menu: 	
+(Please note: some of the functions contianed in the application were not required by the assignment. The all appear below the 'Get Budget' option in the main menu: 	
 - "Find Employee",
 - "Get Budget, Head Count, and Average Salary",
 - "View employees of specific department")
@@ -116,6 +116,6 @@ This project is licensed under the Unlicense
 
 Christopher Backes 
 
-Comments about bugs and and improvements should be directed to the issues of te repo on GitHub.
+Comments about bugs and and improvements should be directed to the issues of the repo on GitHub.
 
 Github: [chris-backes](https://github.com/chris-backes/)
