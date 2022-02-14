@@ -4,6 +4,11 @@
 
 Repo: https://github.com/chris-backes/employee-tracker
 
+(Please note: some of the fucntions contianed in the applciation were not required by the assignment. The all appear below the 'Get Budget' option in the main menu: 	
+- "Find Employee",
+- "Get Budget, Head Count, and Average Salary",
+- "View employees of specific department")
+
 ## Table of Contents
 
 * [Description](#description)
