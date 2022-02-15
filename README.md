@@ -28,7 +28,7 @@ A tutorial on the installation and use of this applicaiton can be found here: ht
 
 (Please note: the video claims tht a dependency 'process' is need to run process.exit(). That is not correct.)
 
-![the applciaiton running from the command line](./assets/screenshot.png)
+![the application running from the command line](./assets/screenshot.png)
 
 ### Database
 
@@ -67,7 +67,7 @@ This requires the following software on your computer:
 -   Bash or any CLI (to run the node and MySQL commands)
 -   (Optional) A MySQL interface tool like Workbench
 
-The application can be cloned from Github. Once on your local machine, from the command line, located at the root directory of the file, run `npm install`. This will download 5 packages and any of their dependencies:
+The application can be cloned from Github. Once on your local machine, from the command line, located at the root directory of the file, run `npm install`. This will download 4 packages and any of their dependencies:
 
 1. mysql2
 2. inquirer
