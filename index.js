@@ -52,7 +52,7 @@ const init = async () => {
 			"Exit",
 		],
 	});
-	redirectQuestion(res.options);
+	await redirectQuestion(res.options);
 };
 
 async function redirectQuestion(param) {
@@ -84,7 +84,6 @@ async function redirectQuestion(param) {
 			console.table(employeesDepartment);
 			break;
 		case "Add a Department":
-			await Database.addDept();
 			const [newDept] = await Database.getTable("department");
 			console.log("New Department Added!");
 			await sleep();
@@ -167,7 +166,13 @@ async function redirectQuestion(param) {
 			return process.exit();
 	}
 	await sleep();
-	init();
 }
+// There is a way to exit the loop in the switch case (process.exit()), and the async/await here forces the process tom complete before moving on to the next iteration
+//setting it up in a while (true) loop allows us to avoid seeting this function up non-recursively
+async function runApp() {
+	do {
+		await init()
+	} while (true)
+} 
 
-init();
+runApp()
