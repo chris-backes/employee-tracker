@@ -169,10 +169,8 @@ async function redirectQuestion(param) {
 }
 // There is a way to exit the loop in the switch case (process.exit()), and the async/await here forces the process tom complete before moving on to the next iteration
 //setting it up in a while (true) loop allows us to avoid seeting this function up non-recursively
-async function runApp() {
+(async function runApp() {
 	do {
 		await init()
 	} while (true)
-} 
-
-runApp()
+})()
